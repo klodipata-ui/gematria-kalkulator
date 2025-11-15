@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gematri Dyshe — Shqip & Arab (1–36 / 1–28) — Dark</title>
+  <style>
+    :root{
+      --bg:#0b013; --card:#0f1418; --muted:#9aa5ad; --accent:#7dd3fc; --glass: rgba(255,255,255,0.03);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#050607 0%, #0b0f13 100%);color:#e6eef2}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    h1{font-size:1.25rem;margin:0}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:0.92rem}
+    .card{background:var(--card);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 6px 20px rgba(2,6,8,0.6)}
+    .tabs{display:flex;gap:8px}
+    .tab{padding:8px 14px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer}
+    .tab.active{background:linear-gradient(90deg, rgba(125,211,252,0.06), rgba(125,211,252,0.02));border-color:rgba(125,211,252,0.12);box-shadow:0 6px 18px rgba(12,20,24,0.6)}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start}
+    textarea{width:100%;min-height:140px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit;padding:12px;border-radius:8px;font-size:1rem;resize:vertical}
+    .right{padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .alpha{font-family:monospace;margin:6px 0;padding:10px;border-radius:6px;background:rgba(255,255,255,0.02);overflow:auto}
+    .values{display:flex;flex-direction:column;gap:8px}
+    .item{display:flex;justify-content:space-between;font-size:0.98rem}
+    .muted{color:var(--muted);font-size:0.9rem}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;cursor:pointer}
+    .download{margin-left:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:0.9rem}
+    @media (max-width:880px){.grid{grid-template-columns:1fr;}.right{order:2}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Gematri Dyshe — Shqip & Arab</h1>
+        <p class="lead">Dy kalkulatorë në një faqe — Tab: <strong id="curTabLabel">Shqip</strong>. Dark mode, pa hamza/hapësira në përpunim të shkronjave.</p>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-shqip" data-tab="shqip" aria-controls="card-shqip">Shqip</button>
+        <button class="tab" id="tab-arab" data-tab="arab" aria-controls="card-arab">Arab</button>
+      </div>
+    </header>
+
+    <div class="card" id="card-shqip">
+      <!-- Shqip section -->
+      <div class="grid">
+        <div>
+          <label class="muted">Shkruaj tekstin (Shqip):</label>
+          <textarea id="inputShqip" placeholder="Shkruaj ketu... (përpunohen: hiq simbolet; digrafet trajtohen si shkronja të veçanta)"></textarea>
+          <div style="margin-top:8px">
+            <button class="btn" id="btnCalcShqip">Llogarit</button>
+            <button class="btn download" id="btnDownload">Shkarko Faqen (HTML)</button>
+          </div>
+        </div>
+        <aside class="right">
+          <div class="values">
+            <div class="item"><div class="muted">Numër fjalësh</div><div id="wordsShqip">0</div></div>
+            <div class="item"><div class="muted">Numër shkronjash</div><div id="lettersShqip">0</div></div>
+            <div class="item"><div class="muted">Vlera totale (1–36)</div><div id="valueShqip">0</div></div>
+          </div>
+
+          <div style="margin-top:12px" class="muted">Alfabeti (linear 1–36):</div>
+          <pre class="alpha" id="alphaShqip"></pre>
+          <div class="muted" style="margin-top:8px;font-size:0.9rem">Rregullim: digrafet (dh, gj, ll, nj, rr, sh, th, xh, zh) trajtohen si një shkronjë. ë dhe ç trajtohen si shkronja të veçanta.</div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="card" id="card-arab" style="display:none;margin-top:12px">
+      <!-- Arab section -->
+      <div class="grid">
+        <div>
+          <label class="muted">Shkruaj tekstin (Arabisht):</label>
+          <textarea id="inputArab" placeholder="Shkruaj ketu... (përpunohen: hiq hamzat, simbolët, hapësirat shtesë)"></textarea>
+          <div style="margin-top:8px">
+            <button class="btn" id="btnCalcArab">Llogarit</button>
+          </div>
+        </div>
+        <aside class="right">
+          <div class="values">
+            <div class="item"><div class="muted">Numër fjalësh</div><div id="wordsArab">0</div></div>
+            <div class="item"><div class="muted">Numër shkronjash</div><div id="lettersArab">0</div></div>
+            <div class="item"><div class="muted">Vlera totale (1–28)</div><div id="valueArab">0</div></div>
+          </div>
+
+          <div style="margin-top:12px" class="muted">Alfabeti (linear 1–28) — pa hamza/hapësira:</div>
+          <pre class="alpha" id="alphaArab"></pre>
+          <div class="muted" style="margin-top:8px;font-size:0.9rem">Përpunimi heq: ء أ إ ئ ؤ — dhe çdo karakter jo-alfabetik. Fjalët numërohen normalisht (hapësirat përdoren vetëm për numërim fjalësh).</div>
+        </aside>
+      </div>
+    </div>
+
+    <footer>Ndërrimi i tab-it ruan përzgjedhjen derisa të ri-freskohet faqja. Përdor butonin "Shkarko Faqen (HTML)" për ta marrë si file që mund ta ruash.</footer>
+  </div>
+
+<script>
+/* --- MAPPINGS --- */
+const shqipLetters = ['a','b','c','ç','d','dh','e','ë','f','g','gj','h','i','j','k','l','ll','m','n','nj','o','p','q','r','rr','s','sh','t','th','u','v','x','xh','y','z','zh'];
+const shqipMap = {}; shqipLetters.forEach((l,i)=> shqipMap[l]=i+1);
+const arabLetters = ['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
+const arabMap = {}; arabLetters.forEach((l,i)=> arabMap[l]=i+1);
+
+document.getElementById('alphaShqip').textContent = shqipLetters.join('');
+document.getElementById('alphaArab').textContent = arabLetters.join('');
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', ()=> switchTab(t.dataset.tab)));
+function switchTab(tab){
+  document.getElementById('curTabLabel').textContent = (tab==='shqip')? 'Shqip' : 'Arab';
+  document.getElementById('card-shqip').style.display = (tab==='shqip')? 'block' : 'none';
+  document.getElementById('card-arab').style.display = (tab==='arab')? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(b=> b.classList.toggle('active', b.dataset.tab===tab));
+}
+
+/* --- SHQIP PROCESSING --- */
+function normalizeShqip(text){
+  text = text.toLowerCase();
+  // keep letters, spaces and ë,ç etc; replace numbers & punctuation with space
+  text = text.replace(/[^a-zçë\s\-\u0101-\u017F]/g, function(ch){
+    if(/\s/.test(ch)) return ' ';
+    return ' ';
+  });
+  text = text.replace(/\s+/g,' ').trim();
+  return text;
+}
+
+function tokenizeShqipUnits(s){
+  const digraphs = ['dh','gj','ll','nj','rr','sh','th','xh','zh'];
+  const out = [];
+  let i=0;
+  while(i<s.length){
+    if(s[i]===' '){ i++; continue; }
+    const two = s.substr(i,2);
+    if(digraphs.includes(two)){ out.push(two); i+=2; continue; }
+    out.push(s[i]); i+=1;
+  }
+  return out;
+}
+
+function calcShqip(){
+  const raw = document.getElementById('inputShqip').value || '';
+  const norm = normalizeShqip(raw);
+  const words = norm.length? norm.split(' ').filter(Boolean) : [];
+  const units = tokenizeShqipUnits(norm);
+  let total=0, validCount=0;
+  units.forEach(u=>{ if(shqipMap[u]){ total += shqipMap[u]; validCount++; } });
+  document.getElementById('wordsShqip').textContent = words.length;
+  document.getElementById('lettersShqip').textContent = validCount;
+  document.getElementById('valueShqip').textContent = total;
+}
+
+/* --- ARAB PROCESSING --- */
+function normalizeArab(text){
+  text = text.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g,'');
+  text = text.replace(/[\u0621\u0623\u0625\u0624\u0626]/g,'');
+  text = text.replace(/[^\u0600-\u06FF\s]/g,' ');
+  text = text.replace(/\s+/g,' ').trim();
+  return text;
+}
+
+function tokenizeArabUnits(s){
+  return s.replace(/\s+/g,'').split('');
+}
+
+function calcArab(){
+  const raw = document.getElementById('inputArab').value || '';
+  const norm = normalizeArab(raw);
+  const words = norm.length? norm.split(' ').filter(Boolean) : [];
+  const units = tokenizeArabUnits(norm);
+  let total=0, validCount=0;
+  units.forEach(u=>{ if(arabMap[u]){ total += arabMap[u]; validCount++; } });
+  document.getElementById('wordsArab').textContent = words.length;
+  document.getElementById('lettersArab').textContent = validCount;
+  document.getElementById('valueArab').textContent = total;
+}
+
+/* --- Events & UX --- */
+document.getElementById('btnCalcShqip').addEventListener('click', calcShqip);
+document.getElementById('btnCalcArab').addEventListener('click', calcArab);
+let t1,t2; document.getElementById('inputShqip').addEventListener('input', ()=>{ clearTimeout(t1); t1=setTimeout(calcShqip,600); });
+document.getElementById('inputArab').addEventListener('input', ()=>{ clearTimeout(t2); t2=setTimeout(calcArab,600); });
+
+/* --- Download page as HTML file --- */
+document.getElementById('btnDownload').addEventListener('click', ()=>{
+  const doc = '<!doctype html>\\n' + document.documentElement.outerHTML;
+  const blob = new Blob([doc],{type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'gematri_dyshe_shqip_arab.html';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+// initial calc
+calcShqip(); calcArab();
+</script>
+</body>
+</html>
